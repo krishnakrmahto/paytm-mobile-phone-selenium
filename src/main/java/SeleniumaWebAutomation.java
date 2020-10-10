@@ -1,5 +1,6 @@
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public class SeleniumaWebAutomation
 
     public static void main(String[] args) throws InterruptedException
     {
-        WebDriver webDriver = openPaytmAndMaximizeWindow();
+        WebDriver webDriver = openPaytmAndMaximizeWindow(args[0]);
 
         openMobilesSection(webDriver);
 
@@ -54,10 +55,16 @@ public class SeleniumaWebAutomation
         webDriver.findElement(By.cssSelector("a[title='Mobiles']")).click();
     }
 
-    private static WebDriver openPaytmAndMaximizeWindow()
+    private static WebDriver openPaytmAndMaximizeWindow(String driverName)
     {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        WebDriver webDriver = new ChromeDriver();
+        WebDriver webDriver;
+        if ("geckodriver".equals(driverName)) {
+            System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver");
+            webDriver = new FirefoxDriver();
+        } else {
+            System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
+            webDriver = new ChromeDriver();
+        }
 
         webDriver.get("http://www.paytm.com");
         webDriver.manage().window().maximize();
